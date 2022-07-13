@@ -1,22 +1,46 @@
 import { useState } from 'react';
 import s from './ContactForm.module.css';
-import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from '../../redux/phonebook/phonebook-actions';
 
-function ContactForm ({onSubmit}) {
+
+function ContactForm () {
 
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
+  const contacts = useSelector(state => state.contacts.items);
+  const dispatch = useDispatch();
+
   const handleChange = e => {
-    const { name, value } = e.target;
-    return name === 'name' ? setName(value) : setNumber(value);
+    const { name, value } = e.currentTarget;
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
   };
+
+  const addContacts = ({name, number}) => {
+    const normalizedName = name.toLowerCase();
+    if(contacts.find(({name}) => name.toLowerCase() === normalizedName)) {
+      alert(`${name} is already in contacts`);
+    }
+    else {
+      return dispatch(addContact({name, number}));
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(name, number);
     setName("");
     setNumber("");
+    return addContacts({name, number});
   };
 
   return (
@@ -49,16 +73,12 @@ function ContactForm ({onSubmit}) {
             />
           </label>
           <button className={s.button} type="submit">
-            Add contact
+          Add contact
           </button>
         </form>
       </div>
     );
   }
 
-ContactForm.propTypes = {
-  name: PropTypes.string,
-  number: PropTypes.number,
-};
 
 export default ContactForm;
