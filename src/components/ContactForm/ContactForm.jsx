@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import s from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { getItemsValueState } from '../../redux/phonebook/phonebook-selectors';
 import { addContact } from '../../redux/phonebook/phonebook-actions';
 
 
@@ -9,7 +10,7 @@ function ContactForm () {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
 
-  const contacts = useSelector(state => state.contacts.items);
+  const contacts = useSelector(getItemsValueState);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -31,6 +32,7 @@ function ContactForm () {
     if(contacts.find(({name}) => name.toLowerCase() === normalizedName)) {
       alert(`${name} is already in contacts`);
     }
+    
     else {
       return dispatch(addContact({name, number}));
     }
@@ -73,7 +75,7 @@ function ContactForm () {
             />
           </label>
           <button className={s.button} type="submit">
-          Add contact
+          Add contact{''}
           </button>
         </form>
       </div>
