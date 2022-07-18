@@ -1,7 +1,7 @@
 import { configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
 import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'reduxjs-toolkit-persist';
 import storage from 'reduxjs-toolkit-persist/lib/storage';
-import contactsReducer from './phonebook/phonebook-reducer';
+import contactsReducer from './phonebook/phonebook-reducers';
 
 const persistConfig = {
     key: 'contacts',
